@@ -1,0 +1,38 @@
+body{
+    background-color: aqua;
+    font-size: 25px;
+  }
+
+table, th, td {
+    background-color: white;
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+  }
+
+ table{
+    width: 100%;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 1rem;
+} 
+
+#back,#save{
+    width: 8rem;
+    font-size: 40px;
+}
+
+.btn{
+  margin-left: 85%;
+}
+
+a{
+    text-decoration: none;
+}
+
+h3{
+    display: inline;
+}
+input{
+    font-size: 25px;
+}

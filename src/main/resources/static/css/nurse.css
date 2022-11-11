@@ -1,0 +1,30 @@
+body{
+    background-color: aqua;
+  }
+
+table, th, td {
+    background-color: white;
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+  }
+
+ table{
+    width: 100%;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 1rem;
+} 
+
+#back,#save{
+    width: 8rem;
+    font-size: 40px;
+}
+
+.btn{
+  margin-left: 92%;
+}
+
+a{
+    text-decoration: none;
+}

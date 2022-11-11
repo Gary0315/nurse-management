@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../css/nurse_view.css">
+   <script src="../jquery-3.6.0.js"></script>
+   <title>Document</title>
+</head>
+
+<body>
+   <div class="btn">
+      <button id="save"><a href="#">儲存</a></button>
+      <button id="back"><a href="./site.html">返回</a></button>
+
+   </div>
+
+   <h3 id="empNumber">員工編號<input type="text" value="xxxxx"></h3><br>
+   <h3 id="nurseName">護士姓名<input type="text" value="xxxxx"></h3>
+   <br><br>
+   <h3>分配站點</h3>
+   <div class="row">
+      <div class="column">
+         <table class="site-table" id="nowSite">
+            <tr>
+               <th>已加入站點</th>
+            </tr>
+            <tr>
+               <td>A點</td>
+            </tr>
+            <tr>
+               <td>B點</td>
+            </tr>
+         </table>
+      </div>
+      <div class="column">
+         <button id="btn_new">&#8592;加入</button><br><br><br><br>
+         <button id="btn_remove">移除&#8594;</button>
+      </div>
+      <div class="column">
+         <table class="site-table" id="noSite">
+            <tr>
+               <th>未加入站點</th>
+            </tr>
+
+            <tr>
+               <td>C點</td>
+            </tr>
+            <tr>
+               <td>D點</td>
+            </tr>
+         </table>
+      </div>
+   </div>
+   <script>
+
+      $(".site-table").on("click", "td", function () {
+         console.log("YA")
+         if ($(this).hasClass("selected")) {
+            $(this).removeClass('selected')
+         } else {
+            $(this).addClass('selected');
+         }
+      });
+
+      $("#btn_new").on("click", function () {
+         $("#noSite tr ").each(function (index, elem) {
+            $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+            // $("#nowSite").append(`<tr>${$("#noSite").find("td.selected").closest("tr").html()}</tr>`);
+            $("#nowSite").find("td.selected").removeClass('selected')
+            $("#noSite").find("td.selected").closest("tr").remove()
+         })
+      });
+
+      $("#btn_remove").on("click", function () {
+         $("#nowSite tr ").each(function (index, elem) {
+            $("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+            //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
+            $("#noSite").find("td.selected").removeClass('selected')
+            $("#nowSite").find("td.selected").closest("tr").remove()
+         })
+      });
+
+   </script>
+
+
+</body>
+
+</html>

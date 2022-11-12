@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/site_view.css">
+    <script src="../jquery-3.6.0.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -14,7 +15,7 @@
         
     </div>
    
-    <h3 id="siteName">站點名稱<input type="text" value="xxxxx"></h3>
+    <h3 id="siteName">站點名稱<input type="text" name="name" value="xxxxx"></h3>
     <br><br>  
     <h3>站點護士列表</h3>
     <table id="site-table">
@@ -27,6 +28,32 @@
             <td>2022/11/10 22:15:00</td>
          </tr>
       </table>
+      
+      <script>
+      $("input[name=name]").val(localStorage.getItem("UpdateName"))
+      console.log(localStorage.getItem("UpdateId"));
+      console.log(localStorage.getItem("UpdateName"));
+      
+      //修改
+      save.onclick=(
+     	     function(){
+          		 $.ajax({
+                       url: `http://localhost:8080/api/site/${localStorage.getItem("UpdateId")}/`,
+                       type:'put',
+                       data: JSON.stringify({
+                       	  "siteid":localStorage.getItem("UpdateId"),
+                          "sitename": $("input[name=name]").val(),
+                          "changetime":new Date()
+                       }),
+                       contentType: "application/json; charset=utf-8",
+                       dataType: 'json',
+                       success: function (data) {           	   
+                     	  alert("修改成功");
+                       }
+                   });
+          }		 
+      )
+      </script>
       
 </body>
 </html>

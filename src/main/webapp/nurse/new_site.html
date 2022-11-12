@@ -3,6 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/site_view.css">
+    <script src="../jquery-3.6.0.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -12,8 +13,35 @@
         
     </div>
    
-    <h3 id="siteName">站點名稱<input type="text" value="xxxxx"></h3>
+    <h3 id="siteName">站點名稱<input name="name" type="text" value=""></h3>
 
-      
+     <script>
+     //重新整理
+     function reloadPage(){
+		 location.reload();
+	 }
+     
+     //新增
+     save.onclick=(
+    	     function(){
+         		 $.ajax({
+                      url: 'http://localhost:8080/api/site/',
+                      type:'post',
+                      data: JSON.stringify({
+                      	  "siteid":0,
+                          "sitename": $("input[name=name]").val(),
+                          "changetime":new Date()
+                      }),
+                      contentType: "application/json; charset=utf-8",
+                      dataType: 'json',
+                      success: function (data) { 	
+                    	  alert("新增成功");
+                    	  reloadPage();
+                      }
+                  });
+         }		 
+     )
+
+     </script> 
 </body>
 </html>

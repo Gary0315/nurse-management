@@ -27,12 +27,6 @@
             <tr>
                <th>已加入站點</th>
             </tr>
-            <tr>
-               <td>A點</td>
-            </tr>
-            <tr>
-               <td>B點</td>
-            </tr>
          </table>
       </div>
       <div class="column">
@@ -42,14 +36,7 @@
       <div class="column">
          <table class="site-table" id="noSite">
             <tr>
-               <th>未加入站點</th>
-            </tr>
-
-            <tr>
-               <td>C點</td>
-            </tr>
-            <tr>
-               <td>D點</td>
+               <th>所有站點</th>
             </tr>
          </table>
       </div>
@@ -59,6 +46,44 @@
       $("input[name=empid]").val(localStorage.getItem("UpdateId"))
       $("input[name=empname]").val(localStorage.getItem("UpdateName"))
    
+      $(document).ready(function(){
+    	  $.ajax({
+  			url: `http://localhost:8080/api/nursesite/${localStorage.getItem("UpdateId")}/`,
+  			dataType: 'json',
+  			success: function (data) {
+  				for(var i=0;i<data.length;i++){
+  					$.ajax({
+  		    			url: `http://localhost:8080/api/site/${data[i].nursesiteDoublePK.siteid}/`,
+  		    			dataType: 'json',
+  		    			success: function (data) {
+  		    				console.log(data);
+  		    					$("#nowSite").append(
+  		    	  	    		    	 ` <tr><td>${data.sitename}</td></tr>`
+  		    	  	    		      );   					
+  		    			}
+  		    		});
+  					//$("#nowSite").append(
+  	  	    		    //	 ` <tr><td>${data[i].siteBean.sitename}</td></tr>`
+  	  	    		    //  );   
+  				}			
+  			}
+  		});
+    	  //所有站點
+    	  $.ajax({
+    			url: `http://localhost:8080/api/site/`,
+    			dataType: 'json',
+    			success: function (data) {
+    				for(var i=0;i<data.length;i++){
+    					$("#noSite").append(
+    	  	    		    	 ` <tr><td>${data[i].sitename}</td></tr>`
+    	  	    		      );   
+    				}			
+    			}
+    		});
+    	  
+    	  
+      });
+    
       //修改
       save.onclick=(
      	     function(){
@@ -79,6 +104,8 @@
           }		 
       )
       
+      
+      
       //加入未加入狀態轉換
       $(".site-table").on("click", "td", function () {
          if ($(this).hasClass("selected")) {
@@ -93,15 +120,15 @@
             $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
             // $("#nowSite").append(`<tr>${$("#noSite").find("td.selected").closest("tr").html()}</tr>`);
             $("#nowSite").find("td.selected").removeClass('selected')
-            $("#noSite").find("td.selected").closest("tr").remove()
+           // $("#noSite").find("td.selected").closest("tr").remove()
          })
       });
 
       $("#btn_remove").on("click", function () {
          $("#nowSite tr ").each(function (index, elem) {
-            $("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
-            //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
-            $("#noSite").find("td.selected").removeClass('selected')
+            //$("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+          //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
+            //$("#noSite").find("td.selected").removeClass('selected')
             $("#nowSite").find("td.selected").closest("tr").remove()
          })
       });

@@ -12,6 +12,7 @@ import tw.com.gary.interviewtest.dao.NurseSiteRepository;
 import tw.com.gary.interviewtest.domain.NurseSiteBean;
 
 
+
 @Service
 @Transactional
 public class NurseSiteService {
@@ -31,6 +32,16 @@ public class NurseSiteService {
 			result = nurseSiteRepository.findAll();
 		}
 		return result;
+	}
+	
+	//查詢一個員工的站點
+	public List<NurseSiteBean> selectnurseSite(Integer id){
+		if(id!=null && id!=0) {
+			List<NurseSiteBean> data = nurseSiteRepository.selectNurseSite(id);
+			return data;
+		}else{
+		return null;
+		}
 	}
 	
 	//新增

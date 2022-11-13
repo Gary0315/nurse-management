@@ -17,8 +17,9 @@
 
    </div>
 
-   <h3 id="empNumber">員工編號<input type="text" value=""></h3><br>
-   <h3 id="nurseName">護士姓名<input type="text" value=""></h3>
+   <h3 id="empNumber">員工編號<input type="text" name="id" value=""></h3><br>
+   <h3 id="nurseName">護士姓名<input name="name" type="text" value=""></h3>
+  
    <br><br>
    <h3>分配站點</h3>
    <div class="row">
@@ -36,20 +37,39 @@
       <div class="column">
          <table class="site-table" id="noSite">
             <tr>
-               <th>未加入站點</th>
-            </tr>
-
-            <tr>
-               <td>C點</td>
-            </tr>
-            <tr>
-               <td>D點</td>
+               <th>所有站點</th>
             </tr>
          </table>
       </div>
    </div>
    <script>
-
+   
+   
+   
+   	  $(document).ready(function(){
+   		$.ajax({
+			url: 'http://localhost:8080/api/nurse/',
+			dataType: 'json',
+			success: function (data) {
+				var length= data.length-1;
+				$("input[name=id]").val(data[length].empid+1);
+			}
+		});
+      
+   	  //所有站點
+  	  $.ajax({
+  			url: `http://localhost:8080/api/site/`,
+  			dataType: 'json',
+  			success: function (data) {
+  				for(var i=0;i<data.length;i++){
+  					$("#noSite").append(
+  	  	    		    	 ` <tr><td>${data[i].sitename}</td></tr>`
+  	  	    		      );   
+  				}			
+  			}
+  		});
+   	  });
+   
       $(".site-table").on("click", "td", function () {
          console.log("YA")
          if ($(this).hasClass("selected")) {
@@ -93,13 +113,16 @@
             $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
             // $("#nowSite").append(`<tr>${$("#noSite").find("td.selected").closest("tr").html()}</tr>`);
             $("#nowSite").find("td.selected").removeClass('selected')
-            $("#noSite").find("td.selected").closest("tr").remove()
+            setTimeout(function(){
+            	 $("#noSite").find("td.selected").removeClass('selected')
+            },100)         
+          //  $("#noSite").find("td.selected").closest("tr").remove()
          })
       });
 
       $("#btn_remove").on("click", function () {
          $("#nowSite tr ").each(function (index, elem) {
-            $("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+            //$("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
             //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
             $("#noSite").find("td.selected").removeClass('selected')
             $("#nowSite").find("td.selected").closest("tr").remove()

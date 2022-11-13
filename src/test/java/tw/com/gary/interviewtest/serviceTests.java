@@ -28,10 +28,19 @@ class serviceTests {
 	@Autowired
 	private NurseSiteService nurseSiteService;
 	
+//	@Test
+//	void selectNurseSite() {
+//		List<NurseSiteBean> siteResult = nurseSiteService.select(null);
+//		System.out.println(siteResult.get(0).getNursesiteDoublePK().getEmpid());
+//	
+//	}
+	
 	@Test
 	void selectNurseSite() {
-		List<NurseSiteBean> siteResult = nurseSiteService.select(null);
-		System.out.println(siteResult.get(0).getNursesiteDoublePK().getEmpid());
+		List<NurseSiteBean> siteResult = nurseSiteService.selectnurseSite(2);
+		System.out.println(siteResult.get(0).getNursesiteDoublePK().getSiteid());
+		System.out.println(siteResult.get(1).getNursesiteDoublePK().getSiteid());
+		System.out.println(siteResult.get(2).getNursesiteDoublePK().getSiteid());
 	
 	}
 	

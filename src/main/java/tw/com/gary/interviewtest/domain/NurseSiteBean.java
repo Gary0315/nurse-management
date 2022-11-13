@@ -25,7 +25,7 @@ public class NurseSiteBean {
 //	public void setSiteBean(SiteBean siteBean) {
 //		this.siteBean = siteBean;
 //	}
-//	
+	
 //	@ManyToOne
 //	@JoinColumn(
 //			name="EMPID",

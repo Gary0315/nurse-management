@@ -30,6 +30,18 @@ public class SiteApiController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> findByPrimaryKey(@PathVariable("id") Integer id){
+		SiteBean bean = new SiteBean();
+		bean.setSiteid(id);
+		List<SiteBean> result = siteService.select(bean);
+		if(result!=null && !result.isEmpty()){
+			return ResponseEntity.ok(result.get(0));
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody SiteBean bean) {
 		SiteBean result = siteService.insert(bean);

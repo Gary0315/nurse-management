@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class NurseSiteDoublePK implements Serializable {
+
 	
 	private Integer empid;
 	private Integer siteid;

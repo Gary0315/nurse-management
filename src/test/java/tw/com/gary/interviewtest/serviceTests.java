@@ -31,7 +31,7 @@ class serviceTests {
 	@Test
 	void selectNurseSite() {
 		List<NurseSiteBean> siteResult = nurseSiteService.select(null);
-		System.out.println(siteResult.get(0).getNurseBean());
+		System.out.println(siteResult.get(0).getNursesiteDoublePK().getEmpid());
 	
 	}
 	

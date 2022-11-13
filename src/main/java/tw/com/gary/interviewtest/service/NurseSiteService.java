@@ -21,8 +21,8 @@ public class NurseSiteService {
 	//查詢
 	public List<NurseSiteBean> select(NurseSiteBean bean) {
 		List<NurseSiteBean> result = null;
-		if (bean != null && bean.getNurseBean().getEmpid() != null && !bean.getNurseBean().getEmpid().equals(0)) {
-			Optional<NurseSiteBean> data = nurseSiteRepository.findById(bean.getNurseBean().getEmpid());
+		if (bean != null && bean.getNursesiteDoublePK().getEmpid() != null && !bean.getNursesiteDoublePK().getEmpid().equals(0)) {
+			Optional<NurseSiteBean> data = nurseSiteRepository.findById(bean.getNursesiteDoublePK());
 			if (data.isPresent()) {
 				result = new ArrayList<NurseSiteBean>();
 				result.add(data.get());
@@ -33,38 +33,38 @@ public class NurseSiteService {
 		return result;
 	}
 	
-//	//新增
-//	public NurseBean insert(NurseBean bean) {
-//		NurseBean result = null;
-//	if (bean != null && bean.getEmpid() != null) {
-//		if (!nurseRepository.existsById(bean.getEmpid())) {
-//			result = nurseRepository.save(bean);
-//		}
-//	}
-//	return result;
-//}
-//	
+	//新增
+	public NurseSiteBean insert(NurseSiteBean bean) {
+		NurseSiteBean result = null;
+	if (bean != null && bean.getNursesiteDoublePK() != null) {
+		if (!nurseSiteRepository.existsById(bean.getNursesiteDoublePK())) {
+			result = nurseSiteRepository.save(bean);
+		}
+	}
+	return result;
+}
+	
 //	//修改
-//	public NurseBean update(NurseBean bean) {
-//		NurseBean result = null;
-//		if(bean!=null&& bean.getEmpid()!=null) {
-//			if(nurseRepository.existsById(bean.getEmpid())) {
-//				return nurseRepository.save(bean);
+//	public NurseSiteBean update(NurseSiteBean bean) {
+//		NurseSiteBean result = null;
+//		if(bean!=null&& bean.getNurseBean().getEmpid()!=null) {
+//			if(nurseSiteRepository.existsById(bean.getNurseBean().getEmpid())) {
+//				return nurseSiteRepository.save(bean);
 //			}
 //		}
 //		return result;
 //	}
 //	
 //	//刪除
-//		public boolean delete(NurseBean bean) {
+//		public boolean delete(NurseSiteBean bean) {
 //			boolean result = false;
-//			if(bean!=null&& bean.getEmpid()!=null) {
-//				if(nurseRepository.existsById(bean.getEmpid())) {
-//					nurseRepository.deleteById(bean.getEmpid());
+//			if(bean!=null&& bean.getNurseBean().getEmpid()!=null) {
+//				if(nurseSiteRepository.existsById(bean.getNurseBean().getEmpid())) {
+//					nurseSiteRepository.deleteById(bean.getNurseBean().getEmpid());
 //					return true;
 //				}
 //			}
 //			return result;
 //		}
-	
+//	
 }

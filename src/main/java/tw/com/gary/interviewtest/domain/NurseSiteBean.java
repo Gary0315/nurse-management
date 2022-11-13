@@ -11,35 +11,35 @@ import javax.persistence.Table;
 @Table(name = "nursesite")
 public class NurseSiteBean {
 	
-	@ManyToOne
-	@JoinColumn(
-			name="SITEID",
-			referencedColumnName = "SITEID"
-			)
-	private SiteBean siteBean;
-	
-	public SiteBean getSiteBean() {
-		return siteBean;
-	}
-	
-	public void setSiteBean(SiteBean siteBean) {
-		this.siteBean = siteBean;
-	}
-	
-	@ManyToOne
-	@JoinColumn(
-			name="EMPID",
-			referencedColumnName = "EMPID"
-			)
-	private NurseBean nurseBean;
-	
-	public NurseBean getNurseBean() {
-		return nurseBean;
-	}
-
-	public void setNurseBean(NurseBean nurseBean) {
-		this.nurseBean = nurseBean;
-	}
+//	@ManyToOne
+//	@JoinColumn(
+//			name="SITEID",
+//			referencedColumnName = "SITEID"
+//			)
+//	private SiteBean siteBean;
+//	
+//	public SiteBean getSiteBean() {
+//		return siteBean;
+//	}
+//	
+//	public void setSiteBean(SiteBean siteBean) {
+//		this.siteBean = siteBean;
+//	}
+//	
+//	@ManyToOne
+//	@JoinColumn(
+//			name="EMPID",
+//			referencedColumnName = "EMPID"
+//			)
+//	private NurseBean nurseBean;
+//	
+//	public NurseBean getNurseBean() {
+//		return nurseBean;
+//	}
+//
+//	public void setNurseBean(NurseBean nurseBean) {
+//		this.nurseBean = nurseBean;
+//	}
 
 	@EmbeddedId
 	private NurseSiteDoublePK nursesiteDoublePK;

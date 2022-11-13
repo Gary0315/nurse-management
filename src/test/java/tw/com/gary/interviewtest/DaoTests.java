@@ -46,8 +46,8 @@ class DaoTests {
 		result2 =  nurseSiteRepository.findAll();
 		System.out.println(result2.get(0).getNursesiteDoublePK().getEmpid());
 		System.out.println(result2.get(0).getAddtime());
-		System.out.println(result2.get(0).getNurseBean());
-		System.out.println(result2.get(0).getSiteBean());
+		System.out.println(result2.get(0).getNursesiteDoublePK());
+		System.out.println(result2.get(0).getNursesiteDoublePK().getSiteid());
 	}
 
 }

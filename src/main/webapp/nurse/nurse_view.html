@@ -13,12 +13,12 @@
 <body>
    <div class="btn">
       <button id="save"><a href="#">儲存</a></button>
-      <button id="back"><a href="./site.html">返回</a></button>
+      <button id="back"><a href="./nurse.html">返回</a></button>
 
    </div>
 
-   <h3 id="empNumber">員工編號<input type="text" value="xxxxx"></h3><br>
-   <h3 id="nurseName">護士姓名<input type="text" value="xxxxx"></h3>
+   <h3 id="empNumber">員工編號<input type="text" name="empid" value="" readonly="true"></h3><br>
+   <h3 id="nurseName">護士姓名<input type="text" name="empname" value=""></h3>
    <br><br>
    <h3>分配站點</h3>
    <div class="row">
@@ -56,8 +56,31 @@
    </div>
    <script>
 
+      $("input[name=empid]").val(localStorage.getItem("UpdateId"))
+      $("input[name=empname]").val(localStorage.getItem("UpdateName"))
+   
+      //修改
+      save.onclick=(
+     	     function(){
+          		 $.ajax({
+                       url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
+                       type:'put',
+                       data: JSON.stringify({
+                       	  "empid":localStorage.getItem("UpdateId"),
+                          "empname": $("input[name=empname]").val(),
+                          "changetime":new Date()
+                       }),
+                       contentType: "application/json; charset=utf-8",
+                       dataType: 'json',
+                       success: function (data) {           	   
+                     	  alert("修改成功");
+                       }
+                   });
+          }		 
+      )
+      
+      //加入未加入狀態轉換
       $(".site-table").on("click", "td", function () {
-         console.log("YA")
          if ($(this).hasClass("selected")) {
             $(this).removeClass('selected')
          } else {

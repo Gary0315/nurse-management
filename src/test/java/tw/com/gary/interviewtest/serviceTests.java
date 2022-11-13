@@ -12,34 +12,38 @@ import tw.com.gary.interviewtest.dao.SiteRepository;
 import tw.com.gary.interviewtest.domain.NurseBean;
 import tw.com.gary.interviewtest.domain.NurseSiteBean;
 import tw.com.gary.interviewtest.domain.SiteBean;
+import tw.com.gary.interviewtest.service.NurseSiteService;
 import tw.com.gary.interviewtest.service.SiteService;
 
 @SpringBootTest
 class serviceTests {
 
 	
-	@Autowired
-	private SiteService siteService;
+	//@Autowired
+	//private SiteService siteService;
 	
 	//@Autowired
 	//private SiteRepository siteRepository;
 	
-	//@Test
-	void method() {
-		List<SiteBean> siteResult = siteService.select(null);
-		System.out.println(siteResult);
-	
-	}
+	@Autowired
+	private NurseSiteService nurseSiteService;
 	
 	@Test
-	void method1() {
-		SiteBean site = new SiteBean();
-		site.setSiteid(0);
-		site.setSitename("櫃台");
-		
-		site  =  siteService.insert(site);
-		System.out.println(site);
+	void selectNurseSite() {
+		List<NurseSiteBean> siteResult = nurseSiteService.select(null);
+		System.out.println(siteResult.get(0).getNurseBean());
+	
 	}
+	
+	//@Test
+//	void method1() {
+//		SiteBean site = new SiteBean();
+//		site.setSiteid(0);
+//		site.setSitename("櫃台");
+//		
+//		site  =  siteService.insert(site);
+//		System.out.println(site);
+//	}
 	
 	//@Test
 //	void method2() {

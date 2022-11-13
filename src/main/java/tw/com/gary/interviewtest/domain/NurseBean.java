@@ -1,5 +1,7 @@
 package tw.com.gary.interviewtest.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +16,11 @@ public class NurseBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer empid;
 	private String empname;
+	private Date changetime;
 	
 	@Override
 	public String toString() {
-		return "nurseBean [empid=" + empid + ", empname=" + empname + "]";
+		return "NurseBean [empid=" + empid + ", empname=" + empname + ", changetime=" + changetime + "]";
 	}
 	public Integer getEmpid() {
 		return empid;
@@ -31,6 +34,14 @@ public class NurseBean {
 	public void setEmpname(String empname) {
 		this.empname = empname;
 	}
+	public Date getChangetime() {
+		return changetime;
+	}
+	public void setChangetime(Date changetime) {
+		this.changetime = changetime;
+	}
+	
+
 	
 	
 	

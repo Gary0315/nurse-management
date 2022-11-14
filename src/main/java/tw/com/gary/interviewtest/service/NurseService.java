@@ -16,8 +16,8 @@ import tw.com.gary.interviewtest.domain.NurseBean;
 public class NurseService {
 	@Autowired
 	private NurseRepository nurseRepository;
-	
-	//查詢
+
+	// 查詢
 	public List<NurseBean> select(NurseBean bean) {
 		List<NurseBean> result = null;
 		if (bean != null && bean.getEmpid() != null && !bean.getEmpid().equals(0)) {
@@ -31,39 +31,39 @@ public class NurseService {
 		}
 		return result;
 	}
-	
-	//新增
+
+	// 新增
 	public NurseBean insert(NurseBean bean) {
 		NurseBean result = null;
-	if (bean != null && bean.getEmpid() != null) {
-		if (!nurseRepository.existsById(bean.getEmpid())) {
-			result = nurseRepository.save(bean);
+		if (bean != null && bean.getEmpid() != null) {
+			if (!nurseRepository.existsById(bean.getEmpid())) {
+				result = nurseRepository.save(bean);
+			}
 		}
+		return result;
 	}
-	return result;
-}
-	
-	//修改
+
+	// 修改
 	public NurseBean update(NurseBean bean) {
 		NurseBean result = null;
-		if(bean!=null&& bean.getEmpid()!=null) {
-			if(nurseRepository.existsById(bean.getEmpid())) {
+		if (bean != null && bean.getEmpid() != null) {
+			if (nurseRepository.existsById(bean.getEmpid())) {
 				return nurseRepository.save(bean);
 			}
 		}
 		return result;
 	}
-	
-	//刪除
-		public boolean delete(NurseBean bean) {
-			boolean result = false;
-			if(bean!=null&& bean.getEmpid()!=null) {
-				if(nurseRepository.existsById(bean.getEmpid())) {
-					nurseRepository.deleteById(bean.getEmpid());
-					return true;
-				}
+
+	// 刪除
+	public boolean delete(NurseBean bean) {
+		boolean result = false;
+		if (bean != null && bean.getEmpid() != null) {
+			if (nurseRepository.existsById(bean.getEmpid())) {
+				nurseRepository.deleteById(bean.getEmpid());
+				return true;
 			}
-			return result;
 		}
-	
+		return result;
+	}
+
 }

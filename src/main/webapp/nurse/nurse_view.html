@@ -36,73 +36,160 @@
       <div class="column">
          <table class="site-table" id="noSite">
             <tr>
-               <th>所有站點</th>
+               <th>未加入站點</th>
             </tr>
          </table>
       </div>
    </div>
    <script>
+      var dataToServer = [];
+      var siteid = [];
+      var deleteId = [];
+
+      //重新整理
+      function reloadPage() {
+         location.reload();
+      }
+
 
       $("input[name=empid]").val(localStorage.getItem("UpdateId"))
-      $("input[name=empname]").val(localStorage.getItem("UpdateName"))
-   
-      $(document).ready(function(){
-    	  $.ajax({
-  			url: `http://localhost:8080/api/nursesite/nurse/${localStorage.getItem("UpdateId")}/`,
-  			dataType: 'json',
-  			success: function (data) {
-  				for(var i=0;i<data.length;i++){
-  					$.ajax({
-  		    			url: `http://localhost:8080/api/site/${data[i].nursesiteDoublePK.siteid}/`,
-  		    			dataType: 'json',
-  		    			success: function (data) {
-  		    				console.log(data);
-  		    					$("#nowSite").append(
-  		    	  	    		    	 ` <tr><td>${data.sitename}</td></tr>`
-  		    	  	    		      );   					
-  		    			}
-  		    		}); 
-  				}			
-  			}
-  		});
-    	  //所有站點
-    	  $.ajax({
-    			url: `http://localhost:8080/api/site/`,
-    			dataType: 'json',
-    			success: function (data) {
-    				for(var i=0;i<data.length;i++){
-    					$("#noSite").append(
-    	  	    		    	 ` <tr><td>${data[i].sitename}</td></tr>`
-    	  	    		      );   
-    				}			
-    			}
-    		});
-    	  
-    	  
+      $.ajax({
+         url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
+         dataType: 'json',
+         success: function (data) {
+            $("input[name=empname]").val(data.empname)
+         }
       });
-    
+
+
+      var nowSiteId = []
+
+      $(document).ready(function () {
+         $.ajax({
+            url: `http://localhost:8080/api/nursesite/nurse/${localStorage.getItem("UpdateId")}/`,
+            dataType: 'json',
+            success: function (data) {
+               for (var i = 0; i < data.length; i++) {
+                  $.ajax({
+                     url: `http://localhost:8080/api/site/${data[i].nursesiteDoublePK.siteid}/`,
+                     dataType: 'json',
+                     success: function (data) {
+                        nowSiteId.push(data.siteid)
+                        console.log(data)
+                        $("#nowSite").append(
+                           ` <tr><td id = ${data.siteid}>${data.sitename}</td></tr>`
+                        );
+                     }
+                  });
+               }
+            }
+         });
+         //未分配站點
+         setTimeout(function () {
+            $.ajax({
+               url: `http://localhost:8080/api/site/`,
+               dataType: 'json',
+               success: function (data) {
+                  for (var i = 0; i < data.length; i++) {
+                     console.log(nowSiteId[i])
+                     //console.log(data[i].siteid)
+                     if (nowSiteId.includes(data[i].siteid)) {
+                     } else {
+                        $("#noSite").append(
+                           ` <tr><td id = ${data[i].siteid}>${data[i].sitename}</td></tr>`
+                        );
+                     }
+                  }
+
+               }
+            });
+         }, 200)
+
+
+
+      });
+
       //修改
-      save.onclick=(
-     	     function(){
-          		 $.ajax({
-                       url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
-                       type:'put',
-                       data: JSON.stringify({
-                       	  "empid":localStorage.getItem("UpdateId"),
-                          "empname": $("input[name=empname]").val(),
-                          "changetime":new Date()
-                       }),
-                       contentType: "application/json; charset=utf-8",
-                       dataType: 'json',
-                       success: function (data) {           	   
-                     	  alert("修改成功");
-                       }
-                   });
-          }		 
+      save.onclick = (
+         function () {
+            $.ajax({
+               url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
+               type: 'put',
+               data: JSON.stringify({
+                  "empid": localStorage.getItem("UpdateId"),
+                  "empname": $("input[name=empname]").val(),
+                  "changetime": new Date()
+               }),
+               contentType: "application/json; charset=utf-8",
+               dataType: 'json',
+               success: function (data) {
+               }
+            });
+
+            //刪除移除的站點	
+            setTimeout(function () {
+               deleteId = [];
+               $("#noSite tr ").each(function (index, elem) {
+                  if ($(elem).find("td").length != 0) {
+                     deleteId.push($(elem).find("td").attr("id"))
+                  }
+               })
+               for (var i = 0; i < deleteId.length; i++) {
+                  $.ajax({
+                     url: `http://localhost:8080/api/nursesite/${localStorage.getItem("UpdateId")}/${deleteId[i]}`,
+                     type: 'delete',
+                     success: function (data) {
+                     }
+                  });
+
+               }
+            }, 150)
+
+            //新增分配站點進資料庫 
+            setTimeout(function () {
+               siteid = [];
+               $("#nowSite tr ").each(function (index, elem) {
+                  if ($(elem).find("td").length != 0) {
+                     siteid.push($(elem).find("td").attr("id"))
+                  }
+               })
+
+               dataToServer = [];
+               for (i = 0; i < document.getElementById("nowSite").getElementsByTagName("td").length; i++) {
+                  dataToServer.push({
+                     "nursesiteDoublePK": {
+                        "empid": localStorage.getItem("UpdateId"),
+                        "siteid":
+                           siteid[i]
+                     },
+                     "addtime": new Date()
+                  });
+               }
+
+
+               $.ajax({
+                  url: 'http://localhost:8080/api/nursesite/',
+                  type: 'post',
+                  data: JSON.stringify(dataToServer),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: 'json',
+                  success: function (data) {
+                     alert("修改成功");
+                     reloadPage();
+                  }, error: function (error) {
+                     console.log(error)
+                     alert("修改成功");
+                     reloadPage(); 	
+                  }
+               });
+
+            }, 300)
+
+         }
       )
-      
-      
-      
+
+
+
       //加入未加入狀態轉換
       $(".site-table").on("click", "td", function () {
          if ($(this).hasClass("selected")) {
@@ -114,18 +201,19 @@
 
       $("#btn_new").on("click", function () {
          $("#noSite tr ").each(function (index, elem) {
-            $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
-            // $("#nowSite").append(`<tr>${$("#noSite").find("td.selected").closest("tr").html()}</tr>`);
+            if ($(elem).find("td.selected").closest("tr").length != 0) {
+               $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+            }
+
             $("#nowSite").find("td.selected").removeClass('selected')
-           // $("#noSite").find("td.selected").closest("tr").remove()
+            $("#noSite").find("td.selected").closest("tr").remove()
          })
       });
 
       $("#btn_remove").on("click", function () {
          $("#nowSite tr ").each(function (index, elem) {
-            //$("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
-          //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
-            //$("#noSite").find("td.selected").removeClass('selected')
+            $("#noSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+            $("#noSite").find("td.selected").removeClass('selected')
             $("#nowSite").find("td.selected").closest("tr").remove()
          })
       });

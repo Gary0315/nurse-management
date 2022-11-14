@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,73 +9,73 @@
     <script src="../jquery-3.6.0.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <div class="btn">
         <button id="save"><a href="#">儲存</a></button>
         <button id="back"><a href="./site.html">返回</a></button>
-        
+
     </div>
-   
+
     <h3 id="siteName">站點名稱<input type="text" name="name" value="xxxxx"></h3>
-    <br><br>  
+    <br><br>
     <h3>站點護士列表</h3>
     <table id="site-table">
         <tr>
-        <th>員工編號</th>
-        <th>加入時間</th>
+            <th>員工編號</th>
+            <th>加入時間</th>
         </tr>
-      </table>
-      
-      <script>
-      $("input[name=name]").val(localStorage.getItem("UpdateName"))
-     // console.log(localStorage.getItem("UpdateId"));
-    //  console.log(localStorage.getItem("UpdateName"));
-      
-      //顯示該站點所有員工
-       $(document).ready(function(){
-    	  $.ajax({
-  			url: `http://localhost:8080/api/nursesite/site/${localStorage.getItem("UpdateId")}/`,
-  			dataType: 'json',
-  			success: function (siteData) {
-  				console.log(siteData)
-  				for(let i=0;i<siteData.length;i++){
-  	  			//	console.log(siteData.length)
-  					$.ajax({
-  		    			url: `http://localhost:8080/api/nurse/${siteData[i].nursesiteDoublePK.empid}/`,
-  		    			dataType: 'json',
-  		    			success: function (empData) {
-  		    	  			   console.log(i);
-  		    					$("#site-table").append(
-  		    	  	    		    	 ` <tr><td>${empData.empname}</td><td>${siteData[i].addtime}</td></tr>`
-  		    	  	    		      );   					
-  		    			}
-  		    		});
- 
-  				}			
-  			}
-  		});
-      });
-      
-      //修改
-      save.onclick=(
-     	     function(){
-          		 $.ajax({
-                       url: `http://localhost:8080/api/site/${localStorage.getItem("UpdateId")}/`,
-                       type:'put',
-                       data: JSON.stringify({
-                       	  "siteid":localStorage.getItem("UpdateId"),
-                          "sitename": $("input[name=name]").val(),
-                          "changetime":new Date()
-                       }),
-                       contentType: "application/json; charset=utf-8",
-                       dataType: 'json',
-                       success: function (data) {           	   
-                     	  alert("修改成功");
-                       }
-                   });
-          }		 
-      )
-      </script>
-      
+    </table>
+
+    <script>
+        $("input[name=name]").val(localStorage.getItem("UpdateName"))
+
+        //顯示該站點所有員工
+        $(document).ready(function () {
+            $.ajax({
+                url: `http://localhost:8080/api/nursesite/site/${localStorage.getItem("UpdateId")}/`,
+                dataType: 'json',
+                success: function (siteData) {
+                    console.log(siteData)
+                    for (let i = 0; i < siteData.length; i++) {
+                        //	console.log(siteData.length)
+                        $.ajax({
+                            url: `http://localhost:8080/api/nurse/${siteData[i].nursesiteDoublePK.empid}/`,
+                            dataType: 'json',
+                            success: function (empData) {
+                                console.log(i);
+                                $("#site-table").append(
+                                    ` <tr><td>${empData.empid}</td><td>${siteData[i].addtime.substring(0, 10) + " " +siteData[i].addtime.substring(11, 19)}</td></tr>`
+                                );
+                            }
+                        });
+
+                    }
+                }
+            });
+        });
+
+        //修改
+        save.onclick = (
+            function () {
+                $.ajax({
+                    url: `http://localhost:8080/api/site/${localStorage.getItem("UpdateId")}/`,
+                    type: 'put',
+                    data: JSON.stringify({
+                        "siteid": localStorage.getItem("UpdateId"),
+                        "sitename": $("input[name=name]").val(),
+                        "changetime": new Date()
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function (data) {
+                        alert("修改成功");
+                    }
+                });
+            }
+        )
+    </script>
+
 </body>
+
 </html>

@@ -35,14 +35,14 @@ class serviceTests {
 //	
 //	}
 	
-	@Test
-	void selectNurseSite() {
-		List<NurseSiteBean> siteResult = nurseSiteService.selectNurse(2);
-		System.out.println(siteResult.get(0).getNursesiteDoublePK().getSiteid());
-		System.out.println(siteResult.get(1).getNursesiteDoublePK().getSiteid());
-		System.out.println(siteResult.get(2).getNursesiteDoublePK().getSiteid());
-	
-	}
+//	@Test
+//	void selectNurseSite() {
+//		List<NurseSiteBean> siteResult = nurseSiteService.selectNurse(2);
+//		System.out.println(siteResult.get(0).getNursesiteDoublePK().getSiteid());
+//		System.out.println(siteResult.get(1).getNursesiteDoublePK().getSiteid());
+//		System.out.println(siteResult.get(2).getNursesiteDoublePK().getSiteid());
+//	
+//	}
 	
 	//@Test
 //	void method1() {
@@ -60,5 +60,11 @@ class serviceTests {
 //		result2 =  nurseSiteRepository.findAll();
 //		System.out.println(result2.get(0).getNursesiteDoublePK().getEmpid());
 //	}
+	
+	@Test
+	void deleteAllSite() {
+		boolean result = nurseSiteService.deleteAllSite(7);
+		System.out.println(result);
+	}
 
 }

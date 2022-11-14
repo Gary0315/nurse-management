@@ -1,82 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/nurse.css">
-    <script src="../jquery-3.6.0.js"></script>
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../css/nurse.css">
+	<script src="../jquery-3.6.0.js"></script>
+	<title>Document</title>
 </head>
+
 <body>
-    <div class="btn">
-        <button id="back"><a href="../index.html">返回</a></button>
-    </div>
-    
-      <table id="nurse-table">
-        <tr>
-        <th>員編</th>
-        <th>修改時間</th>
-        <th>動作</th>
-        </tr>
-      </table>
-      
-        <script>
-      
-      //重新整理
-      function reloadPage(){
- 		 location.reload();
- 	 }
-      
-      $.ajax({
+	<div class="btn">
+		<button id="back"><a href="../index.html">返回</a></button>
+	</div>
+
+	<table id="nurse-table">
+		<tr>
+			<th>員編</th>
+			<th>修改時間</th>
+			<th>動作</th>
+		</tr>
+	</table>
+
+	<script>
+
+		//重新整理
+		function reloadPage() {
+			location.reload();
+		}
+
+		$.ajax({
 			url: 'http://localhost:8080/api/nurse/',
 			dataType: 'json',
 			success: function (data) {
 				console.log(data);
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i]);
-					$("#nurse-table").append(`<tr><td class="name" id="${data[i].empid}" >${data[i].empname}</td><td>${data[i].changetime.substring(0,10)+" "+data[i].changetime.substring(11,19)}</td>`
-					+`<td><span class="view" >查看</span>&emsp;&emsp;<span class="remove">刪除</span></td></tr>`);
+					$("#nurse-table").append(`<tr><td class="name" id="${data[i].empid}" >${data[i].empid}</td><td>${data[i].changetime.substring(0, 10) + " " + data[i].changetime.substring(11, 19)}</td>`
+						+ `<td><span class="view" >查看</span>&emsp;&emsp;<span class="remove">刪除</span></td></tr>`);
 				}
 			}
 		});
-      
-      setTimeout(function(){
-    	  $(".view").click(
-	      		  function(){
-	      	    	  let updateId = $(this).closest("tr").find(".name").attr('id');
-	      	    	  localStorage.setItem("UpdateId", updateId);
-	      	    	  let UpdateName = $(this).closest("tr").find(".name").html();
-	      	    	  localStorage.setItem("UpdateName", UpdateName);
-	      	    	  location.href="./nurse_view.html"
-	      		  	 });
-      },100)
-      
-      setTimeout(function(){
-    	  $(".remove").click(
-    			
-	      		  function(){
-	      			console.log($(this).closest("tr").find(".name").attr('id'));
-	      			  if(confirm("是否確定刪除"+$(this).closest("tr").find(".name").html()+"?")){
-	 	      			 $.ajax({
-		                       url: `http://localhost:8080/api/nurse/${$(this).closest("tr").find(".name").attr('id')}/`,
-		                       type:'delete',
-		                       data: JSON.stringify({
-		                       	  "siteid":$(this).closest("tr").find(".name").attr('id')
-		                       }),
-		                       contentType: "application/json; charset=utf-8",
-		                       dataType: 'json',
-		                       success: function (data) {           	   
-		                     	  alert("刪除成功");
-		                     	  reloadPage();
-		                       }
-		                   });  
-	    			  };
-	      		  });
-      },100)
-   
-      </script>
-      
-      
+
+		setTimeout(function () {
+			$(".view").click(
+				function () {
+					let updateId = $(this).closest("tr").find(".name").attr('id');
+					localStorage.setItem("UpdateId", updateId);
+					//  let UpdateName = $(this).closest("tr").find(".name").html();
+					//  localStorage.setItem("UpdateName", UpdateName);
+					location.href = "./nurse_view.html"
+				});
+		}, 100)
+
+		setTimeout(function () {
+			$(".remove").click(
+
+				function () {
+					var empid = $(this).closest("tr").find(".name").attr('id');
+					if (confirm("是否確定刪除" + $(this).closest("tr").find(".name").html() + "?")) {
+						$.ajax({
+							url: `http://localhost:8080/api/nursesite/allemp/${empid}/`,
+							type: 'delete',
+							contentType: "application/json; charset=utf-8",
+							success: function (data) {
+								$.ajax({
+									url: `http://localhost:8080/api/nurse/${empid}/`,
+									type: 'delete',
+									contentType: "application/json; charset=utf-8",
+									success: function (data) {
+										alert("刪除成功");
+										reloadPage();
+									}
+								});
+							}
+						});
+
+					};
+				});
+		}, 100)
+
+	</script>
+
+
 </body>
+
 </html>

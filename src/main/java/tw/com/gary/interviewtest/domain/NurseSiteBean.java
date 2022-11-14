@@ -7,10 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "nursesite")
 public class NurseSiteBean {
-	
+
 //	@ManyToOne
 //	@JoinColumn(
 //			name="SITEID",
@@ -25,7 +26,7 @@ public class NurseSiteBean {
 //	public void setSiteBean(SiteBean siteBean) {
 //		this.siteBean = siteBean;
 //	}
-	
+
 //	@ManyToOne
 //	@JoinColumn(
 //			name="EMPID",
@@ -43,7 +44,7 @@ public class NurseSiteBean {
 
 	@EmbeddedId
 	private NurseSiteDoublePK nursesiteDoublePK;
-	
+
 	private Date addtime;
 
 	@Override
@@ -54,7 +55,7 @@ public class NurseSiteBean {
 	public NurseSiteDoublePK getNursesiteDoublePK() {
 		return nursesiteDoublePK;
 	}
-	
+
 	public void setNursesiteDoublePK(NurseSiteDoublePK nursesiteDoublePK) {
 		this.nursesiteDoublePK = nursesiteDoublePK;
 	}
@@ -67,7 +68,4 @@ public class NurseSiteBean {
 		this.addtime = addtime;
 	}
 
-	
-	
-	
 }

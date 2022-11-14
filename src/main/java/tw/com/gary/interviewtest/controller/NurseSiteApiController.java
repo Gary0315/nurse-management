@@ -27,17 +27,23 @@ public class NurseSiteApiController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/nurse/{id}")
 	public ResponseEntity<List<NurseSiteBean>> findByEmpId(@PathVariable("id") Integer id) {
-		List<NurseSiteBean> result = nurseSiteService.selectnurseSite(id);
+		List<NurseSiteBean> result = nurseSiteService.selectNurse(id);
+		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping("/site/{id}")
+	public ResponseEntity<List<NurseSiteBean>> findBySiteId(@PathVariable("id") Integer id) {
+		List<NurseSiteBean> result = nurseSiteService.selectSite(id);
 		return ResponseEntity.ok(result);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> create(@RequestBody NurseSiteBean bean) {
-		NurseSiteBean result = nurseSiteService.insert(bean);
+	public ResponseEntity<?> create(@RequestBody List<NurseSiteBean> bean) {
+		List<NurseSiteBean> result = nurseSiteService.insert(bean);
 		if(result!=null) {
-			URI uri = URI.create("/api/orders/"+result.getNursesiteDoublePK().getEmpid());
+			URI uri = URI.create("/api/orders/"+result.get(0).getNursesiteDoublePK().getEmpid());
 			return ResponseEntity.created(uri).body(result);
 		} else {
 			return ResponseEntity.noContent().build();

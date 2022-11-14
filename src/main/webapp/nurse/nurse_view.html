@@ -48,7 +48,7 @@
    
       $(document).ready(function(){
     	  $.ajax({
-  			url: `http://localhost:8080/api/nursesite/${localStorage.getItem("UpdateId")}/`,
+  			url: `http://localhost:8080/api/nursesite/nurse/${localStorage.getItem("UpdateId")}/`,
   			dataType: 'json',
   			success: function (data) {
   				for(var i=0;i<data.length;i++){
@@ -61,10 +61,7 @@
   		    	  	    		    	 ` <tr><td>${data.sitename}</td></tr>`
   		    	  	    		      );   					
   		    			}
-  		    		});
-  					//$("#nowSite").append(
-  	  	    		    //	 ` <tr><td>${data[i].siteBean.sitename}</td></tr>`
-  	  	    		    //  );   
+  		    		}); 
   				}			
   			}
   		});

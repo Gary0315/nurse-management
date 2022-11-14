@@ -12,5 +12,8 @@ import tw.com.gary.interviewtest.domain.NurseSiteDoublePK;
 public interface NurseSiteRepository extends JpaRepository<NurseSiteBean, NurseSiteDoublePK> {
 
 	@Query("select ns from NurseSiteBean ns where ns.nursesiteDoublePK.empid = :empid")
-	List<NurseSiteBean> selectNurseSite(@Param("empid") Integer empid);
+	List<NurseSiteBean> selectNurse(@Param("empid") Integer empid);
+	
+	@Query("select ns from NurseSiteBean ns where ns.nursesiteDoublePK.siteid = :siteid")
+	List<NurseSiteBean> selectSite(@Param("siteid") Integer siteid);
 }

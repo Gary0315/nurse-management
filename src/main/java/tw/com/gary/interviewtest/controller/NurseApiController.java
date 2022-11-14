@@ -30,6 +30,18 @@ public class NurseApiController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> findByPrimaryKey(@PathVariable("id") Integer id){
+		NurseBean bean = new NurseBean();
+		bean.setEmpid(id);
+		List<NurseBean> result = nurseService.select(bean);
+		if(result!=null && !result.isEmpty()){
+			return ResponseEntity.ok(result.get(0));
+		}else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody NurseBean bean) {
 		NurseBean result = nurseService.insert(bean);

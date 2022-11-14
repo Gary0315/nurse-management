@@ -44,15 +44,17 @@
    </div>
    <script>
    
-   
-   
+   var last=0;
+   var dataToServer =[];
+   var siteid =[];
    	  $(document).ready(function(){
    		$.ajax({
 			url: 'http://localhost:8080/api/nurse/',
 			dataType: 'json',
 			success: function (data) {
 				var length= data.length-1;
-				$("input[name=id]").val(data[length].empid+1);
+				last = data[length].empid+1;
+				$("input[name=id]").val(last);
 			}
 		});
       
@@ -63,7 +65,7 @@
   			success: function (data) {
   				for(var i=0;i<data.length;i++){
   					$("#noSite").append(
-  	  	    		    	 ` <tr><td>${data[i].sitename}</td></tr>`
+  	  	    		    	 ` <tr><td id=${data[i].siteid} >${data[i].sitename}</td></tr>`
   	  	    		      );   
   				}			
   			}
@@ -71,7 +73,6 @@
    	  });
    
       $(".site-table").on("click", "td", function () {
-         console.log("YA")
          if ($(this).hasClass("selected")) {
             $(this).removeClass('selected')
          } else {
@@ -87,6 +88,7 @@
       //新增
       save.onclick=(
      	     function(){
+     	    	 //新增員工姓名進資料庫 
           		 $.ajax({
                        url: 'http://localhost:8080/api/nurse/',
                        type:'post',
@@ -98,10 +100,50 @@
                        contentType: "application/json; charset=utf-8",
                        dataType: 'json',
                        success: function (data) { 	
-                     	  alert("新增成功");
-                     	  reloadPage();
                        }
                    });
+        //新增分配站點進資料庫  		
+          setTimeout(function(){
+        	  siteid=[];
+          	$("#nowSite tr ").each(function (index, elem) {
+          		if($(elem).find("td").length!=0){
+              		siteid.push($(elem).find("td").attr("id"))
+          		}
+      			console.log($(elem).find("td"))
+
+  			})
+
+        		dataToServer=[];
+      		for(i=0;i<document.getElementById("nowSite").getElementsByTagName("td").length;i++){
+      			dataToServer.push({
+      				"nursesiteDoublePK":{
+      					"empid":last,
+      					"siteid":
+      						siteid[i]
+      				},
+      	             	"addtime":new Date()
+      	            });
+      		}
+   
+          },150)
+        setTimeout(function(){	
+    		 $.ajax({
+                 url: 'http://localhost:8080/api/nursesite/',
+                 type:'post',
+                 data: JSON.stringify(dataToServer),
+                 contentType: "application/json; charset=utf-8",
+                 dataType: 'json',
+                 success: function (data) {
+                	  alert("新增成功");
+                 	  reloadPage(); 	 
+                 },error:function(){
+                	  alert("新增成功");
+                 	  reloadPage(); 	
+                 }
+             });    
+        	
+        },300)
+		      		 
           }		 
       )
 
@@ -110,14 +152,15 @@
       
       $("#btn_new").on("click", function () {
          $("#noSite tr ").each(function (index, elem) {
-            $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+        	 if($(elem).find("td.selected").closest("tr").length!=0){
+        		 $("#nowSite").append(`<tr>${$(elem).find("td.selected").closest("tr").html()}</tr>`);
+        	 } 
             // $("#nowSite").append(`<tr>${$("#noSite").find("td.selected").closest("tr").html()}</tr>`);
-            $("#nowSite").find("td.selected").removeClass('selected')
-            setTimeout(function(){
-            	 $("#noSite").find("td.selected").removeClass('selected')
-            },100)         
+            $("#nowSite").find("td.selected").removeClass('selected')        
           //  $("#noSite").find("td.selected").closest("tr").remove()
-         })
+         })   
+         $("#noSite").find("td.selected").removeClass('selected')    
+         
       });
 
       $("#btn_remove").on("click", function () {
@@ -126,6 +169,7 @@
             //$("#noSite").append(`<tr>${$("#nowSite").find("td.selected").closest("tr").html()}</tr>`);
             $("#noSite").find("td.selected").removeClass('selected')
             $("#nowSite").find("td.selected").closest("tr").remove()
+            
          })
       });
 

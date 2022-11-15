@@ -23,12 +23,14 @@ public class SiteApiController {
 	@Autowired
 	private SiteService siteService;
 
+//取得所有站點資料
 	@GetMapping
 	public ResponseEntity<List<SiteBean>> findAll() {
 		List<SiteBean> result = siteService.select(null);
 		return ResponseEntity.ok(result);
 	}
 
+//取得特定站點ID資料
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findByPrimaryKey(@PathVariable("id") Integer id) {
 		SiteBean bean = new SiteBean();
@@ -41,6 +43,7 @@ public class SiteApiController {
 		}
 	}
 
+//新增站點
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody SiteBean bean) {
 		SiteBean result = siteService.insert(bean);
@@ -52,6 +55,7 @@ public class SiteApiController {
 		}
 	}
 
+//刪除站點資料
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> remove(@PathVariable("id") Integer id) {
 		SiteBean bean = new SiteBean();
@@ -64,6 +68,7 @@ public class SiteApiController {
 		}
 	}
 
+	// 修改特定站點資料
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody SiteBean bean) {
 		SiteBean result = siteService.update(bean);

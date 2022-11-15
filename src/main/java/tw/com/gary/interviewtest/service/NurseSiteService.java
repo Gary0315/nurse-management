@@ -64,17 +64,6 @@ public class NurseSiteService {
 		return result;
 	}
 
-//	//修改
-//	public NurseSiteBean update(NurseSiteBean bean) {
-//		NurseSiteBean result = null;
-//		if(bean!=null&& bean.getNurseBean().getEmpid()!=null) {
-//			if(nurseSiteRepository.existsById(bean.getNurseBean().getEmpid())) {
-//				return nurseSiteRepository.save(bean);
-//			}
-//		}
-//		return result;
-//	}
-//	
 	// 刪除
 	public boolean delete(NurseSiteBean bean) {
 		boolean result = false;

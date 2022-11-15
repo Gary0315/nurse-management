@@ -42,17 +42,23 @@
       </div>
    </div>
    <script>
+   	  //要新增分配站點的資料
       var dataToServer = [];
-      var siteid = [];
+      //要新增分配站點的站點ID資料
+   	  var siteid = [];
+      //要移除分配站點的資料
       var deleteId = [];
-
+      //原本就已經在已分配站點的資料
+      var nowSiteId = []
+      
       //重新整理
       function reloadPage() {
          location.reload();
       }
 
-
+	  //取得localStorage的empid
       $("input[name=empid]").val(localStorage.getItem("UpdateId"))
+      //預設input裡的名字
       $.ajax({
          url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
          dataType: 'json',
@@ -61,10 +67,8 @@
          }
       });
 
-
-      var nowSiteId = []
-
       $(document).ready(function () {
+    	  //填入此員工已加入站點
          $.ajax({
             url: `http://localhost:8080/api/nursesite/nurse/${localStorage.getItem("UpdateId")}/`,
             dataType: 'json',
@@ -75,7 +79,6 @@
                      dataType: 'json',
                      success: function (data) {
                         nowSiteId.push(data.siteid)
-                        console.log(data)
                         $("#nowSite").append(
                            ` <tr><td id = ${data.siteid}>${data.sitename}</td></tr>`
                         );
@@ -84,15 +87,13 @@
                }
             }
          });
-         //未分配站點
+         //填入此員工未分配站點
          setTimeout(function () {
             $.ajax({
                url: `http://localhost:8080/api/site/`,
                dataType: 'json',
                success: function (data) {
                   for (var i = 0; i < data.length; i++) {
-                     console.log(nowSiteId[i])
-                     //console.log(data[i].siteid)
                      if (nowSiteId.includes(data[i].siteid)) {
                      } else {
                         $("#noSite").append(
@@ -100,7 +101,6 @@
                         );
                      }
                   }
-
                }
             });
          }, 200)
@@ -109,22 +109,22 @@
 
       });
 
-      //修改
-      save.onclick = (
-         function () {
-            $.ajax({
-               url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
-               type: 'put',
-               data: JSON.stringify({
-                  "empid": localStorage.getItem("UpdateId"),
-                  "empname": $("input[name=empname]").val(),
-                  "changetime": new Date()
-               }),
-               contentType: "application/json; charset=utf-8",
-               dataType: 'json',
-               success: function (data) {
-               }
-            });
+	      //修改
+	      save.onclick = (
+	         function () {
+	            $.ajax({
+	               url: `http://localhost:8080/api/nurse/${localStorage.getItem("UpdateId")}/`,
+	               type: 'put',
+	               data: JSON.stringify({
+	                  "empid": localStorage.getItem("UpdateId"),
+	                  "empname": $("input[name=empname]").val(),
+	                  "changetime": new Date()
+	               }),
+	               contentType: "application/json; charset=utf-8",
+	               dataType: 'json',
+	               success: function (data) {
+	               }
+	            });
 
             //刪除移除的站點	
             setTimeout(function () {
@@ -145,15 +145,15 @@
                }
             }, 150)
 
-            //新增分配站點進資料庫 
             setTimeout(function () {
+               //取得要分配站點的siteID 
                siteid = [];
                $("#nowSite tr ").each(function (index, elem) {
                   if ($(elem).find("td").length != 0) {
                      siteid.push($(elem).find("td").attr("id"))
                   }
                })
-
+ 			   //填入新增分配站點所需的資料陣列 
                dataToServer = [];
                for (i = 0; i < document.getElementById("nowSite").getElementsByTagName("td").length; i++) {
                   dataToServer.push({
@@ -166,7 +166,7 @@
                   });
                }
 
-
+               //新增分配站點進資料庫 
                $.ajax({
                   url: 'http://localhost:8080/api/nursesite/',
                   type: 'post',
@@ -182,15 +182,13 @@
                      reloadPage(); 	
                   }
                });
-
             }, 300)
-
          }
       )
 
 
 
-      //加入未加入狀態轉換
+      //已加入未加入狀態轉換
       $(".site-table").on("click", "td", function () {
          if ($(this).hasClass("selected")) {
             $(this).removeClass('selected')

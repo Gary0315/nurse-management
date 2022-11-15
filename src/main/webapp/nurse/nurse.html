@@ -29,42 +29,41 @@
 		function reloadPage() {
 			location.reload();
 		}
-
+	//填入所有護士資訊
 		$.ajax({
 			url: 'http://localhost:8080/api/nurse/',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				for (i = 0; i < data.length; i++) {
-					console.log(data[i]);
 					$("#nurse-table").append(`<tr><td class="name" id="${data[i].empid}" >${data[i].empid}</td><td>${data[i].changetime.substring(0, 10) + " " + data[i].changetime.substring(11, 19)}</td>`
 						+ `<td><span class="view" >查看</span>&emsp;&emsp;<span class="remove">刪除</span></td></tr>`);
 				}
 			}
 		});
-
+        //進入護士的VIEW畫面
 		setTimeout(function () {
 			$(".view").click(
 				function () {
+					//存入所選取的護士empid
 					let updateId = $(this).closest("tr").find(".name").attr('id');
 					localStorage.setItem("UpdateId", updateId);
-					//  let UpdateName = $(this).closest("tr").find(".name").html();
-					//  localStorage.setItem("UpdateName", UpdateName);
 					location.href = "./nurse_view.html"
 				});
 		}, 100)
 
+        //移除護士
 		setTimeout(function () {
 			$(".remove").click(
-
 				function () {
 					var empid = $(this).closest("tr").find(".name").attr('id');
 					if (confirm("是否確定刪除" + $(this).closest("tr").find(".name").html() + "?")) {
+						//移除當前護士站點分配的所有資料
 						$.ajax({
 							url: `http://localhost:8080/api/nursesite/allemp/${empid}/`,
 							type: 'delete',
 							contentType: "application/json; charset=utf-8",
 							success: function (data) {
+								//移除成功後再移除護士的資訊
 								$.ajax({
 									url: `http://localhost:8080/api/nurse/${empid}/`,
 									type: 'delete',

@@ -22,11 +22,10 @@
             location.reload();
         }
 
-        //新增
+        //新增站點
         save.onclick = (
             function () {
                 dataToServer = [];
-
                 $.ajax({
                     url: 'http://localhost:8080/api/site/',
                     type: 'post',
@@ -34,22 +33,6 @@
                         "siteid": 0,
                         "sitename": $("input[name=name]").val(),
                         "changetime": new Date()
-                    }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    success: function (data) {
-                        alert("新增成功");
-                        reloadPage();
-                    }
-                });
-
-                $.ajax({
-                    url: 'http://localhost:8080/api/nursesite/',
-                    type: 'post',
-                    data: JSON.stringify({
-                        "siteid": 0,
-                        "sitename": $("input[name=name]").val(),
-                        "addtime": new Date()
                     }),
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',

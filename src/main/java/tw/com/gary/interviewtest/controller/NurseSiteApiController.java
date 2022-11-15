@@ -25,24 +25,28 @@ public class NurseSiteApiController {
 	@Autowired
 	private NurseSiteService nurseSiteService;
 
+	// 查詢全部已分配站點
 	@GetMapping
 	public ResponseEntity<List<NurseSiteBean>> findAll() {
 		List<NurseSiteBean> result = nurseSiteService.select(null);
 		return ResponseEntity.ok(result);
 	}
 
+	// 查詢特定員工ID已分配站點
 	@GetMapping("/nurse/{id}")
 	public ResponseEntity<List<NurseSiteBean>> findByEmpId(@PathVariable("id") Integer id) {
 		List<NurseSiteBean> result = nurseSiteService.selectNurse(id);
 		return ResponseEntity.ok(result);
 	}
 
+	// 查詢特定站點 已分配員工
 	@GetMapping("/site/{id}")
 	public ResponseEntity<List<NurseSiteBean>> findBySiteId(@PathVariable("id") Integer id) {
 		List<NurseSiteBean> result = nurseSiteService.selectSite(id);
 		return ResponseEntity.ok(result);
 	}
 
+	// 可一次新增多個已分配站點
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody List<NurseSiteBean> bean) {
 		List<NurseSiteBean> result = nurseSiteService.insert(bean);

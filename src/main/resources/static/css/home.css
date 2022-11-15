@@ -8,7 +8,7 @@
   }
   
   .vertical-menu a {
-    background-color: #eee; /* Grey background color */
+    background-color: white; /* Grey background color */
     color: black; /* Black text color */
     display: block; /* Make the links appear below each other */
     padding: 12px; /* Add some padding */
@@ -24,5 +24,5 @@
   }
 
   body{
-    background-color: #8080ff;
+    background-color: rgb(105, 235, 189);
   }

@@ -29,42 +29,44 @@
 		function reloadPage() {
 			location.reload();
 		}
-
+		//填入所有站點資訊
 		$.ajax({
 			url: 'http://localhost:8080/api/site/',
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				for (i = 0; i < data.length; i++) {
-					console.log(data[i].changetime);
 					$("#site-table").append(`<tr><td class="name" id="${data[i].siteid}" >${data[i].sitename}</td><td>${data[i].changetime.substring(0, 10) + " " + data[i].changetime.substring(11, 19)}</td>`
 						+ `<td><span class="view" >查看</span>&emsp;&emsp;<span class="remove">刪除</span></td></tr>`);
 				}
 			}
 		});
-
+        //填入進去VIEW功能
 		setTimeout(function () {
 			$(".view").click(
 				function () {
+					//將當前站點ID存入localStorage 
 					let updateId = $(this).closest("tr").find(".name").attr('id');
 					localStorage.setItem("UpdateId", updateId);
+					//將當前站點NAME存入localStorage 
 					let UpdateName = $(this).closest("tr").find(".name").html();
 					localStorage.setItem("UpdateName", UpdateName);
 					location.href = "./site_view.html"
 				});
 		}, 100)
 
+        //填入移除功能
 		setTimeout(function () {
 			$(".remove").click(
-
 				function () {
 					var siteid = $(this).closest("tr").find(".name").attr('id');
 					if (confirm("是否確定刪除" + $(this).closest("tr").find(".name").html() + "?")) {
+						//刪除此站點所有已分配站點資料
 						$.ajax({
 							url: `http://localhost:8080/api/nursesite/allsite/${siteid}/`,
 							type: 'delete',
 							contentType: "application/json; charset=utf-8",
 							success: function (data) {
+								//成功後再刪除此站點資料
 								$.ajax({
 									url: `http://localhost:8080/api/site/${siteid}/`,
 									type: 'delete',
@@ -80,11 +82,6 @@
 					};
 				});
 		}, 100)
-
-
-
-
-
 	</script>
 
 </body>

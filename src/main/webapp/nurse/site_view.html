@@ -28,6 +28,7 @@
     </table>
 
     <script>
+    //預設input填入站點名稱
         $("input[name=name]").val(localStorage.getItem("UpdateName"))
 
         //顯示該站點所有員工
@@ -35,15 +36,12 @@
             $.ajax({
                 url: `http://localhost:8080/api/nursesite/site/${localStorage.getItem("UpdateId")}/`,
                 dataType: 'json',
-                success: function (siteData) {
-                    console.log(siteData)
+                success: function (siteData) { 
                     for (let i = 0; i < siteData.length; i++) {
-                        //	console.log(siteData.length)
                         $.ajax({
                             url: `http://localhost:8080/api/nurse/${siteData[i].nursesiteDoublePK.empid}/`,
                             dataType: 'json',
                             success: function (empData) {
-                                console.log(i);
                                 $("#site-table").append(
                                     ` <tr><td>${empData.empid}</td><td>${siteData[i].addtime.substring(0, 10) + " " +siteData[i].addtime.substring(11, 19)}</td></tr>`
                                 );

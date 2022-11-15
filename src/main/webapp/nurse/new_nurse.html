@@ -43,22 +43,36 @@
       </div>
    </div>
    <script>
-
+      //最後一筆資料的ID變數
       var last = 0;
+      //要新增分配站點的資料
       var dataToServer = [];
+      //要新增分配站點的站點ID資料
       var siteid = [];
+      
+       //重新整理
+      function reloadPage() {
+         location.reload();
+      }
+      
+      //預設input內的EmpID
       $(document).ready(function () {
          $.ajax({
             url: 'http://localhost:8080/api/nurse/',
             dataType: 'json',
             success: function (data) {
+               if(data.length == 0){
+            	   last = 1;
+            	   $("input[name=id]").val(1);
+               }else{
                var length = data.length - 1;
                last = data[length].empid + 1;
                $("input[name=id]").val(last);
+               }
             }
          });
 
-         //所有站點
+         //填入所有站點資訊
          $.ajax({
             url: `http://localhost:8080/api/site/`,
             dataType: 'json',
@@ -71,20 +85,10 @@
             }
          });
       });
+		
+      
 
-      $(".site-table").on("click", "td", function () {
-         if ($(this).hasClass("selected")) {
-            $(this).removeClass('selected')
-         } else {
-            $(this).addClass('selected');
-         }
-      });
-
-      //重新整理
-      function reloadPage() {
-         location.reload();
-      }
-
+     
       //新增
       save.onclick = (
          function () {
@@ -105,17 +109,16 @@
                   success: function (data) {
                   }
                });
-               //新增分配站點進資料庫  		
+		       
                setTimeout(function () {
+            	 //取得要分配站點的siteID 
                   siteid = [];
                   $("#nowSite tr ").each(function (index, elem) {
                      if ($(elem).find("td").length != 0) {
                         siteid.push($(elem).find("td").attr("id"))
                      }
-                     console.log($(elem).find("td"))
-
                   })
-
+                  //填入新增分配站點所需的資料陣列 
                   dataToServer = [];
                   for (i = 0; i < document.getElementById("nowSite").getElementsByTagName("td").length; i++) {
                      dataToServer.push({
@@ -127,8 +130,9 @@
                         "addtime": new Date()
                      });
                   }
-
                }, 150)
+               
+              //新增分配站點進資料庫  
                setTimeout(function () {
                   $.ajax({
                      url: 'http://localhost:8080/api/nursesite/',
@@ -144,15 +148,20 @@
                         reloadPage();
                      }
                   });
-
                }, 300)
-
             }
          }
       )
 
 
-
+      //已加入未加入站點狀態轉換
+      $(".site-table").on("click", "td", function () {
+         if ($(this).hasClass("selected")) {
+            $(this).removeClass('selected')
+         } else {
+            $(this).addClass('selected');
+         }
+      });
 
       $("#btn_new").on("click", function () {
          $("#noSite tr ").each(function (index, elem) {

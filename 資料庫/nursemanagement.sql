@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:3306
--- 產生時間： 2022-11-13 11:08:01
+-- 產生時間： 2022-11-15 03:47:43
 -- 伺服器版本： 5.7.24
 -- PHP 版本： 8.0.1
 
@@ -38,8 +38,7 @@ CREATE TABLE `nurse` (
 --
 
 INSERT INTO `nurse` (`empID`, `empName`, `changetime`) VALUES
-(1, '王采潔', '2022-11-13 16:45:20'),
-(2, '陳宇彤', '2022-11-13 01:26:01');
+(1, '陳宇彤', '2022-11-15 11:43:10');
 
 -- --------------------------------------------------------
 
@@ -58,23 +57,7 @@ CREATE TABLE `nursesite` (
 --
 
 INSERT INTO `nursesite` (`empID`, `siteID`, `addtime`) VALUES
-(1, 1, '2022-11-13 01:28:07'),
-(1, 6, '2022-11-13 01:28:07'),
-(2, 1, '2022-11-13 01:26:25'),
-(2, 2, '2022-11-13 01:27:31');
-
--- --------------------------------------------------------
-
---
--- 替換檢視表以便查看 `nursesite_info`
--- (請參考以下實際畫面)
---
-CREATE TABLE `nursesite_info` (
-`empid` int(11)
-,`empName` varchar(20)
-,`siteid` int(11)
-,`siteName` varchar(20)
-);
+(1, 1, '2022-11-15 11:43:10');
 
 -- --------------------------------------------------------
 
@@ -93,19 +76,8 @@ CREATE TABLE `site` (
 --
 
 INSERT INTO `site` (`siteID`, `siteName`, `changetime`) VALUES
-(1, '腸胃科', '2022-11-12 21:57:43'),
-(2, '急診', '2022-11-13 18:43:30'),
-(6, '放射科', '2022-11-12 23:02:03'),
-(7, '門診', '2022-11-12 23:02:08');
-
--- --------------------------------------------------------
-
---
--- 檢視表結構 `nursesite_info`
---
-DROP TABLE IF EXISTS `nursesite_info`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `nursesite_info`  AS SELECT `n`.`empID` AS `empid`, `n`.`empName` AS `empName`, `s`.`siteID` AS `siteid`, `s`.`siteName` AS `siteName` FROM ((`nursesite` `ns` left join `nurse` `n` on((`ns`.`empID` = `n`.`empID`))) left join `site` `s` on((`ns`.`siteID` = `s`.`siteID`)))  ;
+(1, '門診', '2022-11-15 11:41:18'),
+(2, '急診', '2022-11-15 11:41:22');
 
 --
 -- 已傾印資料表的索引
@@ -139,13 +111,13 @@ ALTER TABLE `site`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `nurse`
 --
 ALTER TABLE `nurse`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `site`
 --
 ALTER TABLE `site`
-  MODIFY `siteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `siteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 已傾印資料表的限制式

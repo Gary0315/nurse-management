@@ -3,7 +3,7 @@
     text-align: center;
     width: 400px; /* Set a width if you like */
     margin-top:11%;
-    margin-left: 40%; 
+    margin-left: 37%; 
 
   }
   
@@ -25,4 +25,10 @@
 
   body{
     background-color: rgb(105, 235, 189);
+  }
+
+  img{
+    width: 14rem;
+    height:14rem;
+    margin-left:78rem;
   }
